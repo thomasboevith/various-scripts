@@ -25,9 +25,9 @@ Usage:
 
 Options:
   -o <outfileprefix>  Prefix for output filenames.
-  -p <name>           Radio station preset [default: kalw].
+  -p <presetname>     Radio station preset [default: kalw].
   -u <url>            Radio station URL
-  -d <num>            Duration of recording (minutes) [default: 60].
+  -d <duration>       Duration of recording (minutes) [default: 60].
   -h, --help          Show this screen.
   --version           Show version.
   -v                  Print info (-vv for printing lots of info (debug)).
