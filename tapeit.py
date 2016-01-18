@@ -18,13 +18,14 @@ continue recording for the remaining duration in case of a broken internet
 stream.
 
 Usage:
-  {filename} -o <outfileprefix> [-u <url>|-p <presetname>] [-d <duration>]
-             [-v ...]
+  {filename} (-o <outfileprefix>|-o <outfileprefix>) [-u <url>|-p <presetname>]
+             [-d <duration>] [-v ...]
   {filename} (-h | --help)
   {filename} --version
 
 Options:
-  -o <outfileprefix>  Prefix for output filenames.
+  -o <outfileprefix>  Prefix for output filenames with appended timestamp.
+  -O <outfileprefix>  Prefix for output filenames without appended timestamp.
   -p <presetname>     Radio station preset [default: kalw].
   -u <url>            Radio station URL
   -d <duration>       Duration of recording (minutes) [default: 60].
@@ -44,6 +45,7 @@ WARRANTY, to the extent permitted by law.
 
 Version description:
 0.1 Initial version
+0.11 Added option for outfilenameprefix without appended datetimestamp.
 """.format(filename=os.path.basename(__file__), version=version)
 
 presets = {'kalw': 'http://live.str3am.com:2430/kalw'}
