@@ -58,7 +58,10 @@ def record(url, duration_s, outfileprefix, extension='mp3'):
     a timeout."""
     dt_start = datetime.datetime.now()
     datetimestamp = dt_start.strftime('%Y%m%d_%H%M')
-    outfilename = outfileprefix + '_' + datetimestamp + '.' + extension
+    if args['-o']:
+        outfilename = outfileprefix + '_' + datetimestamp + '.' + extension
+    elif args['-O']:
+        outfilename = outfileprefix + '.' + extension
     if os.path.isfile(outfilename):
         log.error('File already exists: %s. Exiting.' % outfilename)
         sys.exit(1)
