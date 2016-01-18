@@ -18,7 +18,7 @@ continue recording for the remaining duration in case of a broken internet
 stream.
 
 Usage:
-  {filename} (-o <outfileprefix>|-o <outfileprefix>) [-u <url>|-p <presetname>]
+  {filename} (-o <outfileprefix>|-O <outfileprefix>) [-u <url>|-p <presetname>]
              [-d <duration>] [-v ...]
   {filename} (-h | --help)
   {filename} --version
