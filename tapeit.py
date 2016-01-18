@@ -18,17 +18,17 @@ continue recording for the remaining duration in case of a broken internet
 stream.
 
 Usage:
-  {filename} (-o <outfileprefix>|-O <outfileprefix>) [-u <url>|-p <presetname>]
-             [-d <duration>] [-v ...]
+  {filename} -o <outfileprefix> [-u <url>|-p <presetname>] [-d <duration>]
+             [-t] [-v ...]
   {filename} (-h | --help)
   {filename} --version
 
 Options:
   -o <outfileprefix>  Prefix for output filenames with appended timestamp.
-  -O <outfileprefix>  Prefix for output filenames without appended timestamp.
   -p <presetname>     Radio station preset [default: kalw].
   -u <url>            Radio station URL
   -d <duration>       Duration of recording (minutes) [default: 60].
+  -t                  Disable datetime stamp in outfilenameprefix.
   -h, --help          Show this screen.
   --version           Show version.
   -v                  Print info (-vv for printing lots of info (debug)).
@@ -52,15 +52,16 @@ presets = {'kalw': 'http://live.str3am.com:2430/kalw',
            'kpfa': 'http://streams1.kpfa.org:8000/kpfa_64'}
 
 
-def record(url, duration_s, outfileprefix, extension='mp3'):
-    """Records stream from url for a certain duration to files with a prefix and
-    optional extension. If an error is caught the recording will commence after
-    a timeout."""
+def record(url, duration_s, outfileprefix, usedatetimestamp=True,
+           extension='mp3'):
+    """Records stream from url for a certain duration to files with a prefix
+    and optional extension. If an exception is caught the recording will resume
+    after a pause."""
     dt_start = datetime.datetime.now()
     datetimestamp = dt_start.strftime('%Y%m%d_%H%M')
-    if args['-o']:
+    if usedatetimestamp:
         outfilename = outfileprefix + '_' + datetimestamp + '.' + extension
-    elif args['-O']:
+    else:
         outfilename = outfileprefix + '.' + extension
     if os.path.isfile(outfilename):
         log.error('File already exists: %s. Exiting.' % outfilename)
@@ -117,7 +118,8 @@ if __name__ == '__main__':
         durationleft_s = duration_s - (t_current - t_start).total_seconds()
         log.info('Recording started, duration remaining: %ss' % durationleft_s)
         if durationleft_s > 30:  # Only record if more than 30 seconds left
-            record(args['-u'], durationleft_s, args['-o'])
+            record(args['-u'], durationleft_s, args['-o'],
+                   usedatetimestamp=args['-t'])
         else:
             break
         t_current = datetime.datetime.now()
