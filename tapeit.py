@@ -8,7 +8,7 @@ import sys
 import time
 import urllib2
 
-version = '0.1'
+version = '0.11'
 
 __doc__ = """
 tapeit.py {version} --- Recording of Internet radio
