@@ -61,9 +61,14 @@ def record(url, duration_s, outfileprefix, usedatetimestamp=True,
         outfilename = outfileprefix + '_' + datetimestamp + '.' + extension
     else:
         outfilename = outfileprefix + '.' + extension
-    if (os.path.isfile(outfilename) and forceoverwrite == False):
-        log.error('File already exists: %s. Exiting.' % outfilename)
-        sys.exit(1)
+    if os.path.isfile(outfilename):
+        log.info('File already exists: %s' % outfilename)
+        if forceoverwrite == True:
+            log.info('  Overwriting file: %s (-f forceoverwrite enabled)'
+                     % outfilename)
+        else:
+            log.error('  Exiting. (Enable overwriting with -f)')
+            sys.exit(1)
 
     log.info('Recording from url: %s' % url)
     f = file(outfilename, 'wb')
