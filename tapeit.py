@@ -8,7 +8,7 @@ import sys
 import time
 import urllib2
 
-version = '0.11'
+version = '0.12'
 
 __doc__ = """
 tapeit.py {version} --- Recording of Internet radio
@@ -19,7 +19,7 @@ stream.
 
 Usage:
   {filename} -o <outfileprefix> [-u <url>|-p <presetname>] [-d <duration>]
-             [-t] [-v ...]
+             [-t] [-f] [-v ...]
   {filename} (-h | --help)
   {filename} --version
 
@@ -29,6 +29,7 @@ Options:
   -u <url>            Radio station URL
   -d <duration>       Duration of recording (minutes) [default: 60].
   -t                  Disable datetime stamp in outfilenameprefix.
+  -f                  Force overwriting of outputfiles [default: False].
   -h, --help          Show this screen.
   --version           Show version.
   -v                  Print info (-vv for printing lots of info (debug)).
@@ -42,18 +43,15 @@ Copyright (C) 2016 Thomas Boevith
 License: GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it. There is NO
 WARRANTY, to the extent permitted by law.
-
-Version description:
-0.1 Initial version
-0.11 Added option for outfilenameprefix without appended datetimestamp.
 """.format(filename=os.path.basename(__file__), version=version)
+
 
 presets = {'kalw': 'http://live.str3am.com:2430/kalw',
            'kpfa': 'http://streams1.kpfa.org:8000/kpfa_64'}
 
 
 def record(url, duration_s, outfileprefix, usedatetimestamp=True,
-           extension='mp3'):
+           forceoverwrite=False, extension='mp3'):
     """Records stream from url for a certain duration to files with a prefix
     and optional extension. If an exception is caught the recording will resume
     after a pause."""
@@ -63,7 +61,7 @@ def record(url, duration_s, outfileprefix, usedatetimestamp=True,
         outfilename = outfileprefix + '_' + datetimestamp + '.' + extension
     else:
         outfilename = outfileprefix + '.' + extension
-    if os.path.isfile(outfilename):
+    if (os.path.isfile(outfilename) and forceoverwrite == False):
         log.error('File already exists: %s. Exiting.' % outfilename)
         sys.exit(1)
 
@@ -119,7 +117,7 @@ if __name__ == '__main__':
         log.info('Recording started, duration remaining: %ss' % durationleft_s)
         if durationleft_s > 30:  # Only record if more than 30 seconds left
             record(args['-u'], durationleft_s, args['-o'],
-                   usedatetimestamp=args['-t'])
+                   usedatetimestamp=args['-t'], forceoverwrite=args['-f'])
         else:
             break
         t_current = datetime.datetime.now()
