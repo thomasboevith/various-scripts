@@ -48,7 +48,8 @@ Version description:
 0.11 Added option for outfilenameprefix without appended datetimestamp.
 """.format(filename=os.path.basename(__file__), version=version)
 
-presets = {'kalw': 'http://live.str3am.com:2430/kalw'}
+presets = {'kalw': 'http://live.str3am.com:2430/kalw',
+           'kpfa': 'http://streams1.kpfa.org:8000/kpfa_64'}
 
 
 def record(url, duration_s, outfileprefix, extension='mp3'):
@@ -83,6 +84,7 @@ def record(url, duration_s, outfileprefix, extension='mp3'):
         log.info('Deleting empty file: %s' % outfilename)
         os.remove(outfilename)
 
+
 if __name__ == '__main__':
     start_time = time.time()
     args = docopt.docopt(__doc__, version=str(version))
@@ -105,7 +107,7 @@ if __name__ == '__main__':
         else:
             log.error('Preset not found: %s' % args['-p'])
 
-    duration_s = int(float(args['-d'])*60)
+    duration_s = int(float(args['-d']) * 60)
     t_start = datetime.datetime.now()
     t_current = datetime.datetime.now()
     while t_current - t_start < datetime.timedelta(seconds=duration_s):
