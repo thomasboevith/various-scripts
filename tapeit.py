@@ -51,19 +51,25 @@ presets = {'kalw': 'http://live.str3am.com:2430/kalw',
 
 
 def record(url, duration_s, outfileprefix, usedatetimestamp=True,
-           forceoverwrite=False, extension='mp3'):
+           forceoverwrite=False, ext='mp3', numretries=0):
     """Records stream from url for a certain duration to files with a prefix
     and optional extension. If an exception is caught the recording will resume
     after a pause."""
     dt_start = datetime.datetime.now()
     datetimestamp = dt_start.strftime('%Y%m%d_%H%M')
     if usedatetimestamp:
-        outfilename = outfileprefix + '_' + datetimestamp + '.' + extension
+        outfilename = outfileprefix + '_' + datetimestamp + '.' + ext
     else:
-        outfilename = outfileprefix + '.' + extension
+        outfilename = outfileprefix + '.' + ext
+        if numretries > 0:
+            count = 1
+            while os.path.isfile(outfilename):
+                outfilename = outfileprefix + '_' + str(count) + '.' + ext
+                count += 1
+
     if os.path.isfile(outfilename):
         log.info('File already exists: %s' % outfilename)
-        if forceoverwrite == True:
+        if forceoverwrite:
             log.info('  Overwriting file: %s (-f forceoverwrite enabled)'
                      % outfilename)
         else:
@@ -84,8 +90,9 @@ def record(url, duration_s, outfileprefix, usedatetimestamp=True,
     except:
         e = sys.exc_info()[0]
         log.error('Error in record() function: %r' % e)
-        log.info('Wait and retry...')
-        time.sleep(60)
+        wait_s = 60
+        log.info('Waiting for %s seconds and then retry recording...' % wait_s)
+        time.sleep(wait_s)
 
     if os.stat(outfilename).st_size == 0:
         log.info('Deleting empty file: %s' % outfilename)
@@ -117,14 +124,25 @@ if __name__ == '__main__':
     duration_s = int(float(args['-d']) * 60)
     t_start = datetime.datetime.now()
     t_current = datetime.datetime.now()
+    numretries = 0
+    maxnumretries = 10
+    minrecordingtime_s = 30
     while t_current - t_start < datetime.timedelta(seconds=duration_s):
         durationleft_s = duration_s - (t_current - t_start).total_seconds()
         log.info('Recording started, duration remaining: %ss' % durationleft_s)
-        if durationleft_s > 30:  # Only record if more than 30 seconds left
+        if numretries >= maxnumretries:
+            log.error('Maximum number of retries exceeded: %s'
+                      % maxnumretries)
+            log.error('  Exiting.')
+            sys.exit(1)
+        elif durationleft_s > minrecordingtime_s: # Avoid short recordings
             record(args['-u'], durationleft_s, args['-o'],
-                   usedatetimestamp=args['-t'], forceoverwrite=args['-f'])
+                   usedatetimestamp=(not args['-t']),
+                   forceoverwrite=args['-f'], numretries=numretries)
         else:
             break
+        numretries += 1
+        log.info('Number of retries: %s' % numretries)
         t_current = datetime.datetime.now()
 
     log.info('Recording ended')
