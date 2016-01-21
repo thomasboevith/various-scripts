@@ -131,10 +131,10 @@ if __name__ == '__main__':
         durationleft_s = duration_s - (t_current - t_start).total_seconds()
         log.info('Recording started, duration remaining: %ss' % durationleft_s)
         if numretries >= maxnumretries:
-            log.error('Maximum number of retries exceeded: %s'
+            log.warning('Maximum number of retries exceeded: %s'
                       % maxnumretries)
-            log.error('  Exiting.')
-            sys.exit(1)
+            log.warning('  Exiting.')
+            break
         elif durationleft_s > minrecordingtime_s: # Avoid short recordings
             record(args['-u'], durationleft_s, args['-o'],
                    usedatetimestamp=(not args['-t']),
