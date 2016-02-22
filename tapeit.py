@@ -8,7 +8,7 @@ import sys
 import time
 import urllib2
 
-version = '0.12'
+version = '0.13'
 
 __doc__ = """
 tapeit.py {version} --- Recording of Internet radio
@@ -115,9 +115,12 @@ if __name__ == '__main__':
     log.debug('%s started' % os.path.basename(__file__))
     log.debug('docopt args=%s' % str(args).replace('\n', ''))
 
-    if args['-p']:
+    if args['-u']:
+        log.info('Url specified: %s' % args['-u'])
+    elif args['-p']:
         if args['-p'] in presets:
             args['-u'] = presets[args['-p']]
+            log.info('Url from preset: %s' % args['-u'])
         else:
             log.error('Preset not found: %s' % args['-p'])
 
