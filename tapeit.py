@@ -138,7 +138,7 @@ if __name__ == '__main__':
                       % maxnumretries)
             log.warning('  Exiting.')
             break
-        elif durationleft_s > minrecordingtime_s: # Avoid short recordings
+        elif durationleft_s > minrecordingtime_s:  # Avoid short recordings
             record(args['-u'], durationleft_s, args['-o'],
                    usedatetimestamp=(not args['-t']),
                    forceoverwrite=args['-f'], numretries=numretries)
