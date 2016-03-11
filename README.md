@@ -1,5 +1,5 @@
-# various-scripts
-Scripts for all sorts of small purposes
+# various-scripts-audio
+Scripts for all sorts of audio-related purposes
 
 ## tapeit.py --- Recording of internet radio
 Records an Internet radio stream for a certain duration. Will attempt to
