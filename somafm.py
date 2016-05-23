@@ -6,7 +6,6 @@ import os
 import random
 import re
 import requests
-import signal
 import subprocess
 import sys
 import termcolor
@@ -132,8 +131,8 @@ if __name__ == '__main__':
                             url = playlist['url']
                             break
 
-            print('Playing %s' % selected['title'])
-            #log.debug('Running command: %s' % cmd)
+            print(termcolor.colored('SomaFM: %s' % selected['title'], 'red', \
+                                attrs=['bold']))
             player_process = subprocess.Popen(['mplayer', url], \
                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
@@ -144,6 +143,8 @@ if __name__ == '__main__':
                     colors = ['grey', 'red', 'green', 'yellow', 'blue', \
                                   'magenta', 'cyan', 'white']
                     random_color = random.choice(colors)
+                    timestamp = time.strftime("%H:%M")
+                    print(timestamp),
                     print(termcolor.colored(attrs.get('StreamTitle', '(none)'),
                                        random_color))
 
