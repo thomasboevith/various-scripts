@@ -1,6 +1,9 @@
 # various-scripts-audio
 Scripts for all sorts of audio-related purposes
 
+## somafm.py --- Playing SomaFM internet radio from the command line
+Plays SomaFM from the commandline using mplayer.
+
 ## tapeit.py --- Recording of internet radio
 Records an Internet radio stream for a certain duration. Will attempt to
 continue recording for the remaining duration in case of a broken internet
