@@ -119,34 +119,35 @@ if __name__ == '__main__':
                 for playlist in selected['playlists']:
                     if playlist['quality'] == args['-q']:
                         url = playlist['url']
-                        log.debug('Found url for quality %s: %s' \
-                                                           % (args['-q'], url))
+                        log.debug('Found url for quality %s: %s'
+                                  % (args['-q'], url))
                         break
                 log.info('Could not get url for quality: %s' % args['-q'])
                 for quality in ['highest', 'high', 'low']:
-                    log.debug('Attempting to get url for quality: %s' \
-                                                                     % quality)
+                    log.debug('Attempting to get url for quality: %s'
+                              % quality)
                     for playlist in selected['playlists']:
                         if playlist['quality'] == args['-q']:
                             url = playlist['url']
                             break
 
-            print(termcolor.colored('SomaFM: %s' % selected['title'], 'red', \
-                                attrs=['bold']))
-            player_process = subprocess.Popen(['mplayer', url], \
-                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            print(termcolor.colored('SomaFM: %s' % selected['title'], 'red',
+                                    attrs=['bold']))
+            player_process = subprocess.Popen(['mplayer', url],
+                                              stdout=subprocess.PIPE,
+                                              stderr=subprocess.STDOUT)
 
             for line in player_process.stdout:
                 if line.startswith('ICY Info:'):
                     icy_info = line.split(':', 1)[1].strip()
                     attrs = dict(re.findall("(\w+)='([^']*)'", icy_info))
-                    colors = ['grey', 'red', 'green', 'yellow', 'blue', \
-                                  'magenta', 'cyan', 'white']
+                    colors = ['grey', 'red', 'green', 'yellow', 'blue',
+                              'magenta', 'cyan', 'white']
                     random_color = random.choice(colors)
                     timestamp = time.strftime("%H:%M")
                     print(timestamp),
                     print(termcolor.colored(attrs.get('StreamTitle', '(none)'),
-                                       random_color))
+                                            random_color))
 
     log.debug('Processing time={0:.2f} s'.format(time.time() - start_time))
     log.debug('%s ended' % os.path.basename(__file__))
