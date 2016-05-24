@@ -20,6 +20,7 @@ somafm.py {version} --- playing SomaFM internet radio from the command line
 Usage:
   {filename} (-l | --list) [-v ...]
   {filename} <channel> [-q <quality>] [-p <playername>] [-v ...]
+  {filename} (-r | --random) [-v ...]
   {filename} (-h | --help)
   {filename} --version
 
@@ -27,6 +28,7 @@ Options:
   -l, --list         List available channels.
   -q <quality>       Audio stream quality, low/high/highest [default: highest].
   -p <playername>    Player for audio stream [default: mplayer].
+  -r, --random       Play a random channel.
   -h, --help         Show this screen.
   --version          Show version.
   -v                 Print info (-vv for printing lots of info (debug)).
@@ -88,6 +90,10 @@ if __name__ == '__main__':
             print(termcolor.colored(channel_id, 'red')),
             print(termcolor.colored(data[channel_id]['title'], 'green')),
             print(termcolor.colored(data[channel_id]['description'], 'white'))
+
+    if args['--random']:
+        args['<channel>'] = random.choice(data.keys())
+        log.debug('Found random channel: %s' % args['<channel>'])
 
     if args['<channel>']:
         log.debug('Attempting find channel: %s' % args['<channel>'])
