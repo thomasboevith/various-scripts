@@ -139,12 +139,13 @@ if __name__ == '__main__':
                 sys.exit(1)
 
             print(termcolor.colored('SomaFM: %s' % selected['title'], 'red',
-                                    attrs=['bold']))
+                                    attrs=['bold'])),
+            print('(press "q" to exit)')
             player_process = subprocess.Popen(['mplayer', url],
                                               stdout=subprocess.PIPE,
                                               stderr=subprocess.STDOUT)
             try:
-                player_process.communicate()
+                #player_process.communicate()
                 for line in player_process.stdout:
                     if line.startswith('ICY Info:'):
                         icy_info = line.split(':', 1)[1].strip()
