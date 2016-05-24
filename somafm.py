@@ -6,6 +6,7 @@ import os
 import random
 import re
 import requests
+import signal
 import subprocess
 import sys
 import termcolor
@@ -112,42 +113,55 @@ if __name__ == '__main__':
             sys.exit(1)
         else:
             log.debug('Found channel: %s' % selected['id'])
+            log.debug(selected)
             log.debug('Attempting play channel: %s' % selected['id'])
-            log.debug('Attempting to get url for quality: %s' % args['-q'])
+            qualities = ['highest', 'high', 'low']
+            quality_index = qualities.index(args['-q'])
+
             url = None
-            while url is None:
+            while True:
+                log.debug('Attempting to get url for quality: %s' %
+                          qualities[quality_index])
                 for playlist in selected['playlists']:
-                    if playlist['quality'] == args['-q']:
+                    if playlist['quality'] == qualities[quality_index]:
                         url = playlist['url']
-                        log.debug('Found url for quality %s: %s'
-                                  % (args['-q'], url))
                         break
-                log.info('Could not get url for quality: %s' % args['-q'])
-                for quality in ['highest', 'high', 'low']:
-                    log.debug('Attempting to get url for quality: %s'
-                              % quality)
-                    for playlist in selected['playlists']:
-                        if playlist['quality'] == args['-q']:
-                            url = playlist['url']
-                            break
+                if url is not None:
+                    log.debug('Url found: %s for playlist %s' % (url, playlist))
+                    break
+                elif quality_index < len(qualities):
+                    log.debug('Could not get %s quality' %
+                              qualities[quality_index])
+                    quality_index += 1
+
+            if url is None:
+                log.error('Could not find url')
+                sys.exit(1)
 
             print(termcolor.colored('SomaFM: %s' % selected['title'], 'red',
                                     attrs=['bold']))
             player_process = subprocess.Popen(['mplayer', url],
                                               stdout=subprocess.PIPE,
                                               stderr=subprocess.STDOUT)
-
-            for line in player_process.stdout:
-                if line.startswith('ICY Info:'):
-                    icy_info = line.split(':', 1)[1].strip()
-                    attrs = dict(re.findall("(\w+)='([^']*)'", icy_info))
-                    colors = ['grey', 'red', 'green', 'yellow', 'blue',
-                              'magenta', 'cyan', 'white']
-                    random_color = random.choice(colors)
-                    timestamp = time.strftime("%H:%M")
-                    print(timestamp),
-                    print(termcolor.colored(attrs.get('StreamTitle', '(none)'),
-                                            random_color))
+            try:
+                player_process.communicate()
+                for line in player_process.stdout:
+                    if line.startswith('ICY Info:'):
+                        icy_info = line.split(':', 1)[1].strip()
+                        attrs = dict(re.findall("(\w+)='([^']*)'", icy_info))
+                        colors = ['grey', 'red', 'green', 'yellow', 'blue',
+                                  'magenta', 'cyan', 'white']
+                        random_color = random.choice(colors)
+                        timestamp = time.strftime("%H:%M")
+                        print(timestamp),
+                        print(termcolor.colored(attrs.get('StreamTitle', '(none)'),
+                                                random_color))
+            except KeyboardInterrupt:
+                log.debug('KeyboardInterrupt received. Closing player_process')
+                player_process.send_signal(signal.SIGINT)
+                player_process.wait()
+            except:
+                log.debug('Interrupt received. Closing player_process')
 
     log.debug('Processing time={0:.2f} s'.format(time.time() - start_time))
     log.debug('%s ended' % os.path.basename(__file__))
