@@ -18,24 +18,26 @@ __doc__ = """
 cli-player.py {version} --- play internet streams on the commandline
 
 Usage:
-  {filename} (-l | --list) [-v ...]
-  {filename} <channel> [-p <playername>] [-v ...]
+  {filename} (-l | --list) [-c <channelfilename>] [-v ...]
+  {filename} <channel> [-c <channelfilename>] [-p <playername>] [-v ...]
   {filename} (-r | --random) [-v ...]
   {filename} (-h | --help)
   {filename} --version
 
 Options:
-  -l, --list         List available channels.
-  -p <playername>    Player for audio stream [default: mplayer].
-  -r, --random       Play a random channel.
-  -h, --help         Show this screen.
-  --version          Show version.
-  -v                 Print info (-vv for printing lots of info (debug)).
+  -l, --list            List available channels.
+  -p <playername>       Player for audio stream [default: mplayer].
+  -r, --random          Play a random channel.
+  -c <channelfilename>  Specify channel filename.
+  -h, --help            Show this screen.
+  --version             Show version.
+  -v                    Print info (-vv for printing lots of info (debug)).
 
 Examples:
   {filename} -l
   {filename} wfmu
-  {filename} -r
+  {filename} -c cliradio.json -l
+  {filename} -c cliradio.json -r
 
 Copyright (C) 2016 Thomas Boevith
 
@@ -62,9 +64,23 @@ if __name__ == '__main__':
     log.debug('docopt args=%s' % str(args).replace('\n', ''))
 
     # Get channel information
-    with open('cliradio.json') as jsonfile:
-        jsondata = json.load(jsonfile)
-        log.debug('JSON data: %s ' % jsondata)
+    if args['-c']:
+        with open(args['-c']) as jsonfile:
+            jsondata = json.load(jsonfile)
+            log.debug('JSON data: %s ' % jsondata)
+    else:
+        # Get channel information
+        channels_url = 'https://raw.githubusercontent.com/thomasboevith/various-scripts-audio/master/cliradio.json'
+        log.debug('Requesting %s' % channels_url)
+        r = requests.get(channels_url)
+        status_code = r.status_code
+        content = r.content
+        log.debug('Status code: %s OK' % status_code)
+        if status_code != 200:
+            log.debug('Could not get content. Exitting.')
+            sys.exit(1)
+
+        jsondata = json.loads(content)
 
     # Make a dictionary with channel id as key
     data = {}
