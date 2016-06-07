@@ -1,0 +1,37 @@
+{ "channels": [
+  { "id": "wfmu",
+    "title": "WFMU",
+    "description": "",
+    "playlists": [
+      { "url": "http://wfmu.org/wfmu.pls", "format": "mp3",  "quality": "highest" }
+    ]
+  },
+  { "id": "drp6beat",
+    "title": "DR P6 Beat",
+    "description": "",
+    "playlists": [
+      { "url": "http://live-icy.gss.dr.dk/A/A29H.mp3.m3u", "format": "mp3",  "quality": "highest" }
+    ]
+  },
+  { "id": "drp7mix",
+    "title": "DR P7 Mix",
+    "description": "",
+    "playlists": [
+      { "url": "http://live-icy.gss.dr.dk/A/A21H.mp3.m3u", "format": "mp3",  "quality": "highest" }
+    ]
+  },
+  { "id": "drp8jazz",
+    "title": "DR P8 Jazz",
+    "description": "",
+    "playlists": [
+      { "url": "http://live-icy.gss.dr.dk/A/A22H.mp3.m3u", "format": "mp3",  "quality": "highest" }
+    ]
+  },
+  { "id": "p2",
+    "title": "DR P2 Klassisk",
+    "description": "",
+    "playlists": [
+      { "url": "http://live-icy.gss.dr.dk/A/A04H.mp3.m3u", "format": "mp3",  "quality": "highest" }
+    ]
+  }
+]}
