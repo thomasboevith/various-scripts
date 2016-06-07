@@ -1,6 +1,32 @@
 # various-scripts-audio
 Scripts for all sorts of audio-related purposes
 
+## cliradio.py --- Play internet radio streams on the commandline
+
+    cliradio.py 0.1 --- play internet streams on the commandline
+
+    Usage:
+      cliradio.py (-l | --list) [-c <channelfilename>] [-v ...]
+      cliradio.py <channel> [-c <channelfilename>] [-p <playername>] [-v ...]
+      cliradio.py (-r | --random) [-v ...]
+      cliradio.py (-h | --help)
+      cliradio.py --version
+
+    Options:
+      -l, --list            List available channels.
+      -p <playername>       Player for audio stream [default: mplayer].
+      -r, --random          Play a random channel.
+      -c <channelfilename>  Specify channel filename.
+      -h, --help            Show this screen.
+      --version             Show version.
+      -v                    Print info (-vv for printing lots of info (debug)).
+
+    Examples:
+      cliradio.py -l
+      cliradio.py wfmu
+      cliradio.py -c cliradio.json -l
+      cliradio.py -c cliradio.json -r
+
 ## somafm.py --- Playing SomaFM internet radio from the command line
 Plays SomaFM from the commandline using mplayer.
 
