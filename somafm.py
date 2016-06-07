@@ -97,6 +97,7 @@ if __name__ == '__main__':
 
     if args['<channel>']:
         log.debug('Attempting find channel: %s' % args['<channel>'])
+        selected = None
         # Try matching the id
         try:
             for channel in data.keys():
@@ -104,20 +105,25 @@ if __name__ == '__main__':
                     selected = data[channel]
                     break
             log.debug('Could not match channel perfectly, trying fuzzy match')
-            for channel in data.keys():
-                pattern = re.compile(args['<channel>'], re.IGNORECASE)
-                id_match = pattern.match(data[channel]['id'])
-                title_match = pattern.match(data[channel]['title'])
-                if (id_match is not None) or (title_match is not None):
-                    selected = data[channel]
-                    break
-        except:
-            message = 'Could not find the specified channel: %s' \
-                % args['<channel>']
-            log.debug(message)
-            print(message)
+            for field in ['id', 'title']:
+                if selected is None:
+                    for channel in data.keys():
+                        pattern = re.compile(args['<channel>'], re.IGNORECASE)
+                        match = pattern.search(data[channel][field])
+                        if match is not None:
+                            selected = data[channel]
+                            break
+        except Exception as ex:
+            log.exception('%s' % ex)
             sys.exit(1)
         else:
+            if selected is None:
+                message = 'Could not find the specified channel: %s' \
+                    % args['<channel>']
+                log.debug(message)
+                print(message)
+            sys.exit(1)
+
             log.debug('Found channel: %s' % selected['id'])
             log.debug(selected)
             log.debug('Attempting play channel: %s' % selected['id'])
