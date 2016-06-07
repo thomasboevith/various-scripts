@@ -15,10 +15,10 @@ import time
 version = '0.1'
 
 __doc__ = """
-cli-player.py {version} --- play internet streams on the commandline
+cliradio.py {version} --- play internet radio streams on the commandline
 
 Usage:
-  {filename} (-l | --list) [-c <channelfilename>] [-v ...]
+  {filename} (-l | --list) [-c <channelfilename>] g[-v ...]
   {filename} <channel> [-c <channelfilename>] [-p <playername>] [-v ...]
   {filename} (-r | --random) [-v ...]
   {filename} (-h | --help)
