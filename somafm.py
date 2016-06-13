@@ -112,6 +112,7 @@ if __name__ == '__main__':
                         match = pattern.search(data[channel][field])
                         if match is not None:
                             selected = data[channel]
+                            log.debug('Found channel: %s' % selected['id'])
                             break
         except Exception as ex:
             log.exception('%s' % ex)
@@ -122,7 +123,7 @@ if __name__ == '__main__':
                     % args['<channel>']
                 log.debug(message)
                 print(message)
-            sys.exit(1)
+                sys.exit(1)
 
             log.debug('Found channel: %s' % selected['id'])
             log.debug(selected)
