@@ -18,7 +18,7 @@ __doc__ = """
 cliradio.py {version} --- play internet radio streams on the commandline
 
 Usage:
-  {filename} (-l | --list) [-c <channelfilename>] g[-v ...]
+  {filename} (-l | --list) [-c <channelfilename>] [-v ...]
   {filename} <channel> [-c <channelfilename>] [-p <playername>] [-v ...]
   {filename} (-r | --random) [-v ...]
   {filename} (-h | --help)
