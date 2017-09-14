@@ -7,7 +7,7 @@
     ]
   },
   { "id": "ubuweb",
-    "title": "ubuweb",
+    "title": "UbuWeb",
     "description": "All avant-garde. All the time.",
     "playlists": [
       { "url": "http://wfmu.org/wfmu_ubu.pls", "format": "mp3",  "quality": "highest" }
