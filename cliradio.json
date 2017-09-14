@@ -1,9 +1,16 @@
 { "channels": [
   { "id": "wfmu",
     "title": "WFMU",
-    "description": "",
+    "description": "Freeform radio.",
     "playlists": [
       { "url": "http://wfmu.org/wfmu.pls", "format": "mp3",  "quality": "highest" }
+    ]
+  },
+  { "id": "ubuweb",
+    "title": "ubuweb",
+    "description": "All avant-garde. All the time.",
+    "playlists": [
+      { "url": "http://wfmu.org/wfmu_ubu.pls", "format": "mp3",  "quality": "highest" }
     ]
   },
   { "id": "drp6beat",
