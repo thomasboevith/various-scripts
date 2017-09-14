@@ -152,7 +152,7 @@ if __name__ == '__main__':
                         icy_info = line.split(':', 1)[1].strip()
                         attrs = dict(re.findall("(\w+)='([^']*)'", icy_info))
                         colors = ['grey', 'red', 'green', 'yellow', 'blue',
-                                  'magenta', 'cyan', 'white']
+                                  'magenta', 'cyan']
                         random_color = random.choice(colors)
                         timestamp = time.strftime("%H:%M")
                         stream_title = attrs.get('StreamTitle', '(none)')
