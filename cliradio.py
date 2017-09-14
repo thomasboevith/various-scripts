@@ -155,9 +155,10 @@ if __name__ == '__main__':
                                   'magenta', 'cyan', 'white']
                         random_color = random.choice(colors)
                         timestamp = time.strftime("%H:%M")
-                        print(timestamp),
-                        print(termcolor.colored(attrs.get('StreamTitle',
-                                                      '(none)'), random_color))
+                        stream_title = attrs.get('StreamTitle', '(none)')
+                        if stream_title != '':
+                            print(timestamp),
+                            print(termcolor.colored(stream_title, random_color))
             except KeyboardInterrupt:
                 log.debug('KeyboardInterrupt received. Closing player_process')
                 player_process.send_signal(signal.SIGINT)
