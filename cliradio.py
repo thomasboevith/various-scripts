@@ -94,8 +94,8 @@ if __name__ == '__main__':
         print(termcolor.colored('Description', 'white'))
         print(79 * '-')
         for channel_id in sorted(data):
-            print(termcolor.colored(channel_id, 'red')),
             print(termcolor.colored(data[channel_id]['title'], 'green')),
+            print(termcolor.colored(channel_id, 'red')),
             print(termcolor.colored(data[channel_id]['description'], 'white'))
 
     if args['--random']:
